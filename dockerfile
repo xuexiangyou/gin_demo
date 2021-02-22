@@ -11,7 +11,12 @@ RUN apk add --no-cache make git
 
 WORKDIR /gin_demo
 COPY . .
-RUN go clean && GO111MODULE=on go bulid -ldflags "-s -w" -o docker/build/main cmd/main.go
+RUN go clean && GO111MODULE=on go build -ldflags "-s -w" -o docker/build/main cmd/main.go
+
+FROM alpine as gin_demo
+WORKDIR /gin_demo
+RUN apk update --no-cache && apk add --no-cache ca-certificates tzdata
+ENV TZ Asia/Shanghai
 
 COPY --from=builder /gin_demo/docker/build/main      /gin_demo/docker/build/
 
