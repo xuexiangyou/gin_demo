@@ -6,6 +6,8 @@ import (
 	"strconv"
 
 	"github.com/jinzhu/gorm"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var Eloquent *gorm.DB
