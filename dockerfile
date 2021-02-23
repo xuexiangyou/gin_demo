@@ -7,7 +7,7 @@ ENV GOOS linux
 WORKDIR /go/cache
 COPY go.mod go.sum ./
 RUN go mod download
-RUN apk add --no-cache make git
+# RUN apk add --no-cache make git
 
 WORKDIR /gin_demo
 COPY . .
