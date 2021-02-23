@@ -27,6 +27,8 @@ services:
       retries: 30
   gin_demo:
     image: gin_demo
+    ports:
+      - 8080:8080
     depends_on:
       mysql:
         condition: service_healthy
