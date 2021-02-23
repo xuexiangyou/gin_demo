@@ -1,0 +1,44 @@
+version: '2.4'
+
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql/init/init.sql:/docker-entrypoint-initdb.d/test.sql
+      - ./mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "mysql", "-P", "3306", "-u", "root", "-proot", "-e", "SELECT 1"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+  gin_demo:
+    image: gin_demo
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - 3414:80
+    depends_on:
+      - gin_demo
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./logs:/var/log/nginx
