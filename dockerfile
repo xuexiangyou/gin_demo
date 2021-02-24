@@ -7,7 +7,11 @@ ENV GOOS linux
 WORKDIR /go/cache
 COPY go.mod go.sum ./
 RUN go mod download
-# RUN apk add --no-cache make git
+
+# 切换apk为阿里云的源 腾讯服务器太慢了
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+RUN apk add --no-cache make git
 
 WORKDIR /gin_demo
 COPY . .
