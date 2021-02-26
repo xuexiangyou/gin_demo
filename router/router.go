@@ -8,6 +8,6 @@ import (
 func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.GET("/admin/info", admin.Info)
-	r.GET("/admin/hello". admin.Hello)
+	r.GET("/admin/hello", admin.Hello)
 	return r
 }
