@@ -19,3 +19,7 @@ func Info(c *gin.Context) {
 		app.Ok(c, data, "")
 	}
 }
+
+func Hello(c *gin.Context) {
+	app.Ok(c, "hello world", "")
+}
